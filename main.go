@@ -10,6 +10,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/Si-Huan/rsync-os/rsync"
 	"github.com/Si-Huan/rsync-os/storage"
 	"github.com/robfig/cron"
@@ -56,11 +57,17 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition,func(), error) {
 			return
 		}
 		if err := client.Sync(); err != nil {
+			fmt.Println("Sync Err: ",err)
+			err = stor.FinishSync()
+			if err != nil {
+				fmt.Println("Sync Err FinishSync Err: ",err)
+			}
 			mi.StatusChan <- FAILD
 			return
 		}
 		err = stor.FinishSync()
 		if err != nil {
+			fmt.Println("Sync Success FinishSync Err: ",err)
 			mi.StatusChan <- FAILD
 			return
 		}

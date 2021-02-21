@@ -15,10 +15,12 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210220124922-3e0d35fb6d9f h1:UN0/iz89GgMJEEOQaYMLmLrd5IH0WOOFrqM+2EyKTiI=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210220124922-3e0d35fb6d9f/go.mod h1:uwmC1RpBvmqXSnnisPp8jEV3mEqDO+2dLrKGH6MCJXk=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210221075622-bea030364230 h1:hUUGsz7/oih0wGFcLlxJZu26FhrCVRB5T/TXWDH2zFM=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210221075622-bea030364230/go.mod h1:5wlXXlfukC2/sE36jW1arq+8bvMm/DJLjcuSWcAhYRY=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210219043959-2991e6452421 h1:Ezi8pC9mZDrtlKIGhlzHOiM7//zPgE59uZF4ALPonQk=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210219043959-2991e6452421/go.mod h1:djl/OL5Fu3X+pC+uuyrzP8tSrHe8Lhp3+47RlfoQ28c=
+github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75 h1:6m4w2YKdnlzYNhtz7785WurOFDp/qM7NpQCZeLc3iTo=
+github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75/go.mod h1:t4ZYJT9mV6kATnAVvUeguXmOrtBaWriXntoxYQKur/Y=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
@@ -123,8 +125,6 @@ github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1
 github.com/jtolds/gls v4.20.0+incompatible h1:xdiiI2gbIgH/gLH7ADydsJ1uDOEzR8yvV7C0MuV77Wo=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
-github.com/kaiakz/ubuffer v0.0.0-20200803053910-dd1083087166 h1:IAukUBAVLUWBcexOYgkTD/EjMkfnNos7g7LFpyIdHJI=
-github.com/kaiakz/ubuffer v0.0.0-20200803053910-dd1083087166/go.mod h1:T4xUEny5PVedYIbkMAKYEBjMyDsOvvP0qK4s324AKA8=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/klauspost/cpuid v1.2.3 h1:CCtW0xUnWGVINKvE/WWOYKdsPV6mawAtvQuSl8guwQs=
