@@ -15,10 +15,10 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210222055050-725d095ce638 h1:X02kUMCOCm34v0mleKgk37fn8stssCKoKYYN/sd1hjQ=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210222055050-725d095ce638/go.mod h1:5wlXXlfukC2/sE36jW1arq+8bvMm/DJLjcuSWcAhYRY=
-github.com/Si-Huan/teambition-pan-api v0.0.0-20210219043959-2991e6452421 h1:Ezi8pC9mZDrtlKIGhlzHOiM7//zPgE59uZF4ALPonQk=
-github.com/Si-Huan/teambition-pan-api v0.0.0-20210219043959-2991e6452421/go.mod h1:djl/OL5Fu3X+pC+uuyrzP8tSrHe8Lhp3+47RlfoQ28c=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210222131342-55e5ee1585e3 h1:5Sn1eRlPkjAFgschLx6tRo3dlQQFNDf0HXbOmOOjZb0=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210222131342-55e5ee1585e3/go.mod h1:/RIJ6Sf5NMG3Dl8X045s8fGSmpjtu/KNWnkAp+0MlAE=
+github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5 h1:BYyFwJhB6nStx0HejO5AG6VKvoSvGTvv0CDu/3WEIFk=
+github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5/go.mod h1:djl/OL5Fu3X+pC+uuyrzP8tSrHe8Lhp3+47RlfoQ28c=
 github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75 h1:6m4w2YKdnlzYNhtz7785WurOFDp/qM7NpQCZeLc3iTo=
 github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75/go.mod h1:t4ZYJT9mV6kATnAVvUeguXmOrtBaWriXntoxYQKur/Y=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
