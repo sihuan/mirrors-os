@@ -53,8 +53,7 @@ func newHandel(base string, fs rsync.FS) func(http.ResponseWriter, *http.Request
 		case nil:
 			http.Redirect(w, r, url, http.StatusFound)
 			break
-		case storage.NotFound:
-		case storage.TargetNotFound:
+		case storage.NotFound,storage.TargetNotFound:
 			w.WriteHeader(http.StatusNotFound)
 			w.Write([]byte("Not Found."))
 			break
@@ -65,6 +64,7 @@ func newHandel(base string, fs rsync.FS) func(http.ResponseWriter, *http.Request
 		default:
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("There is something wrong."))
+			break
 		}
 	}
 }
