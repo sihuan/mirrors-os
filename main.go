@@ -9,6 +9,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/Si-Huan/rsync-os/rsync"
@@ -18,32 +19,37 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 )
 
-func initTask(task *taskConf) (*MirrorItem, *storage.Teambition,func(), error) {
+func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) {
 	addr, module, path, err := rsync.SplitURI(task.Src)
-
 	if err != nil {
 		log.Println("Invaild URI")
-		return nil, nil,nil, err
+		return nil, nil, nil, err
 	}
-
-	log.Println(module, path)
-
 	ppath := rsync.TrimPrepath(path)
+	log.Println(module, ppath)
 
-	bucket := filepath.Join(task.Base, module)
-
-	stor, err := storage.NewTeambition(bucket, ppath, task.DBPath, task.Cookie)
+	dbppath, err := rel(task.SrcRoot, task.Src)
 	if err != nil {
-		return nil, nil,nil, err
+		log.Println("Invaild Root")
+		return nil, nil, nil, err
+	}
+	if task.Name == "" {
+		return  nil,nil,nil, errors.New("task name can't be blank")
+	}
+	bucket := filepath.Join(task.Base, task.Name)
+	stor, err := storage.NewTeambition(bucket, dbppath, task.DBPath, task.Cookie)
+	if err != nil {
+		return nil, nil, nil, err
 	}
 
 	statusChan := make(chan Status)
 	mi := &MirrorItem{
-		ServePath:  "/" + filepath.Join(module, ppath) + "/",
+		ServePath:  "/" + filepath.Join(task.Name, dbppath) + "/",
 		FS:         stor,
 		StatusChan: statusChan,
 		Status:     0,
@@ -57,17 +63,17 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition,func(), error) {
 			return
 		}
 		if err := client.Sync(); err != nil {
-			fmt.Println("Sync Err: ",err)
+			fmt.Println("Sync Err: ", err)
 			err = stor.FinishSync()
 			if err != nil {
-				fmt.Println("Sync Err FinishSync Err: ",err)
+				fmt.Println("Sync Err FinishSync Err: ", err)
 			}
 			mi.StatusChan <- FAILD
 			return
 		}
 		err = stor.FinishSync()
 		if err != nil {
-			fmt.Println("Sync Success FinishSync Err: ",err)
+			fmt.Println("Sync Success FinishSync Err: ", err)
 			mi.StatusChan <- FAILD
 			return
 		}
@@ -75,15 +81,17 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition,func(), error) {
 		return
 	}
 
-	return mi, stor,sync, nil
+	return mi, stor, sync, nil
 }
 
 type taskConf struct {
-	Src    string
-	Cookie string
-	Base   string
-	DBPath string
-	Cron   string
+	Name    string
+	Src     string
+	SrcRoot string
+	Cookie  string
+	Base    string
+	DBPath  string
+	Cron    string
 }
 
 func main() {
@@ -101,12 +109,12 @@ func main() {
 		if viper.UnmarshalKey(arg, task) != nil {
 			panic(arg + " conf err")
 		}
-		mi,stor, sync, err := initTask(task)
+		mi, stor, sync, err := initTask(task)
 		if err != nil {
 			panic(arg + " init err")
 		}
 		mirrorItems = append(mirrorItems, mi)
-		stors = append(stors,stor)
+		stors = append(stors, stor)
 		c.AddFunc(task.Cron, sync)
 	}
 	globalConf := viper.GetStringMapString("global")
@@ -119,4 +127,18 @@ func main() {
 	for _, stor := range stors {
 		stor.Close()
 	}
+}
+
+func rel(srcRoot string, src string) (string, error) {
+	if !strings.HasSuffix(srcRoot, "/") {
+		srcRoot += "/"
+	}
+	if !strings.HasSuffix(src, "/") {
+		src += "/"
+	}
+
+	if !strings.HasPrefix(src, srcRoot) {
+		return "", errors.New("wrong src root")
+	}
+	return strings.TrimPrefix(src, srcRoot), nil
 }

@@ -37,14 +37,18 @@ func createSampleConfig() {
   server = "127.0.0.1:52111"
 
 [archlinux]
+  name = "archlinux"
   src = "rsync://mirrors.tuna.tsinghua.edu.cn/archlinux/"
+  srcroot = "rsync://mirrors.tuna.tsinghua.edu.cn/archlinux/"
   cookie = "TEAMBITION_SESSIONID=xxx; TEAMBITION_SESSIONID.sig=xxx"
   base = "mirrors/"
   dbpath = "archlinux.db"
   cron = "0 0 0,12 * * *"
 
 [archlinuxcn]
+  name = "archlinuxcn"
   src = "rsync://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/"
+  srcroot = "rsync://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/"
   cookie = "TEAMBITION_SESSIONID=xxx; TEAMBITION_SESSIONID.sig=xxx"
   base = "mirrors/"
   dbpath = "archlinuxcn.db"
