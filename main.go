@@ -39,7 +39,7 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 		return nil, nil, nil, err
 	}
 	if task.Name == "" {
-		return  nil,nil,nil, errors.New("task name can't be blank")
+		return nil, nil, nil, errors.New("task name can't be blank")
 	}
 	bucket := filepath.Join(task.Base, task.Name)
 	stor, err := storage.NewTeambition(bucket, dbppath, task.DBPath, task.Cookie)
@@ -62,14 +62,21 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 			mi.StatusChan <- FAILD
 			return
 		}
+		retry := 0
 		if err := client.Sync(); err != nil {
-			fmt.Println("Sync Err: ", err)
-			err = stor.FinishSync()
-			if err != nil {
-				fmt.Println("Sync Err FinishSync Err: ", err)
+			for err != nil && retry < 5 {
+				if err := stor.FinishSync(); err != nil {
+					fmt.Println("Sync Err FinishSync Err: ", err)
+				}
+				fmt.Println(task.Name, "Sync Err: ", err, "Retry:", retry)
+				err = client.Sync()
+				retry++
 			}
-			mi.StatusChan <- FAILD
-			return
+			if err != nil {
+				fmt.Println(task.Name, "Sync F,ERR: ", err)
+				mi.StatusChan <- FAILD
+				return
+			}
 		}
 		err = stor.FinishSync()
 		if err != nil {
