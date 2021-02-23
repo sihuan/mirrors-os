@@ -15,8 +15,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210222131342-55e5ee1585e3 h1:5Sn1eRlPkjAFgschLx6tRo3dlQQFNDf0HXbOmOOjZb0=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210222131342-55e5ee1585e3/go.mod h1:/RIJ6Sf5NMG3Dl8X045s8fGSmpjtu/KNWnkAp+0MlAE=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210223112640-7b54440a3dfa h1:mlY9pjgK81zDTRmjdcafWK3Thx674MBDrrmpIh6ohJw=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210223112640-7b54440a3dfa/go.mod h1:Y905zqPK9vSM9p9f3rbW21glcVSGaZkEKaBVuyBfqyY=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5 h1:BYyFwJhB6nStx0HejO5AG6VKvoSvGTvv0CDu/3WEIFk=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5/go.mod h1:djl/OL5Fu3X+pC+uuyrzP8tSrHe8Lhp3+47RlfoQ28c=
 github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75 h1:6m4w2YKdnlzYNhtz7785WurOFDp/qM7NpQCZeLc3iTo=
@@ -129,6 +129,7 @@ github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvW
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/klauspost/cpuid v1.2.3 h1:CCtW0xUnWGVINKvE/WWOYKdsPV6mawAtvQuSl8guwQs=
 github.com/klauspost/cpuid v1.2.3/go.mod h1:Pj4uuM528wm8OyEC2QMXAi2YiTZ96dNQPGgoMS4s3ek=
+github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515/go.mod h1:+0opPa2QZZtGFBFZlji/RkVcI2GknAs/DXo4wKdlNEc=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
@@ -193,6 +194,7 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb6uqfes/u+d4ooFouqFdy9/2g9QGwK3SQygK0Ts=
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
+github.com/sirupsen/logrus v1.5.0 h1:1N5EYkVAPEywqZRJd7cwnRtCb6xJx7NH3T3WUTF980Q=
 github.com/sirupsen/logrus v1.5.0/go.mod h1:+F7Ogzej0PZc/94MaYx/nvG9jOFMD2osvC3s+Squfpo=
 github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d h1:zE9ykElWQ6/NYmHa3jpm/yHnI4xSofP+UP6SpjHcSeM=
 github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d/go.mod h1:OnSkiWE9lh6wB0YB77sQom3nweQdgAjqCqsofrRNTgc=

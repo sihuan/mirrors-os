@@ -11,15 +11,15 @@ package main
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"github.com/Si-Huan/rsync-os/rsync"
 	"github.com/Si-Huan/rsync-os/storage"
 	"github.com/robfig/cron"
-	"log"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/spf13/viper"
 )
@@ -27,15 +27,12 @@ import (
 func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) {
 	addr, module, path, err := rsync.SplitURI(task.Src)
 	if err != nil {
-		log.Println("Invaild URI")
 		return nil, nil, nil, err
 	}
 	ppath := rsync.TrimPrepath(path)
-	log.Println(module, ppath)
 
 	dbppath, err := rel(task.SrcRoot, task.Src)
 	if err != nil {
-		log.Println("Invaild Root")
 		return nil, nil, nil, err
 	}
 	if task.Name == "" {
@@ -56,7 +53,16 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 	}
 
 	sync := func() {
+		rsync.Logger.WithFields(logrus.Fields{
+			"module": module,
+			"path":   ppath,
+		}).Warn("SRC")
+
 		mi.StatusChan <- UPDATING
+
+		Logger.WithFields(logrus.Fields{
+			"task": task.Name,
+		}).Info("Sync Start")
 
 		var (
 			retry        = 0
@@ -67,33 +73,55 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 		for retry == 0 || (err != nil && retry < 5) {
 			client, err = rsync.SocketClient(stor, addr, module, ppath, nil)
 			if err != nil {
-				fmt.Println(task.Name, "Sync Socket Connect Err: ", err, "Retry:", retry)
+				Logger.WithFields(logrus.Fields{
+					"task": task.Name,
+					"err": err,
+					"retry": retry,
+				}).Error("Sync Socket Connect Err")
 				retry++
 				continue
 			}
 			err = client.Sync()
 			if err != nil {
 				if err := stor.FinishSync(); err != nil {
-					fmt.Println(task.Name, "Sync Err FinishSync Err: ", err)
+					Logger.WithFields(logrus.Fields{
+						"task": task.Name,
+						"err": err,
+						"at_retry": retry,
+					}).Error("Sync Err FinishSync Err")
 				}
-				fmt.Println(task.Name, "Sync Err: ", err, "Retry:", retry)
+				Logger.WithFields(logrus.Fields{
+					"task": task.Name,
+					"err": err,
+					"retry": retry,
+				}).Error("Sync Err")
 			}
 			retry++
 		}
 
 		if err != nil {
-			fmt.Println(task.Name, "Sync F,ERR: ", err)
 			mi.StatusChan <- FAILD
+			Logger.WithFields(logrus.Fields{
+				"task": task.Name,
+				"err": err,
+			}).Error("Sync Faild")
 			return
 		}
 
 		err = stor.FinishSync()
 		if err != nil {
-			fmt.Println("Sync Success FinishSync Err: ", err)
 			mi.StatusChan <- FAILD
+			Logger.WithFields(logrus.Fields{
+				"task": task.Name,
+				"err": err,
+			}).Error("Sync Success FinishSync Err")
 			return
 		}
 		mi.StatusChan <- SUCCESS
+		Logger.WithFields(logrus.Fields{
+			"task": task.Name,
+			"err": err,
+		}).Info("Sync Success")
 		return
 	}
 
@@ -110,39 +138,75 @@ type taskConf struct {
 	Cron    string
 }
 
+var Logger = logrus.New()
+
 func main() {
 	loadConfigIfExists()
 	flag.Parse()
 	args := flag.Args()
 
+	globalConf := viper.GetStringMapString("global")
+	if globalConf["logdir"] == "" {
+		globalConf["logdir"] = "./log"
+	}
+
 	var mirrorItems []*MirrorItem
 	var stors []*storage.Teambition
-
+	var logFiles []*os.File
 	c := cron.New()
+
+	if err := createLogDir(globalConf["logdir"]); err != nil {
+		panic(err)
+	}
+	//logFile, err := os.OpenFile(filepath.Join(globalConf["logdir"], "mirrors-os.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer logFile.Close()
+	//Logger.SetOutput(io.MultiWriter(os.Stdout, logFile))
+	Logger.SetOutput(os.Stdout)
 
 	for _, arg := range args {
 		task := &taskConf{}
 		if viper.UnmarshalKey(arg, task) != nil {
 			panic(arg + " conf err")
 		}
+		logFile, err := os.OpenFile(filepath.Join(globalConf["logdir"], task.Name+".log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			panic(err)
+		}
+		logFiles = append(logFiles, logFile)
+		rsync.Logger.SetOutput(logFile)
 		mi, stor, sync, err := initTask(task)
 		if err != nil {
-			panic(arg + " init err")
+			panic(arg + " init err: " + err.Error())
 		}
 		mirrorItems = append(mirrorItems, mi)
 		stors = append(stors, stor)
 		c.AddFunc(task.Cron, sync)
+		Logger.WithFields(logrus.Fields{
+			"task": task.Name,
+			"cron": task.Cron,
+			"src": task.Src,
+		}).Info("Add Cron")
 	}
-	globalConf := viper.GetStringMapString("global")
+
 	mirrorServer := NewMirrorServer(mirrorItems, globalConf["server"])
 	go mirrorServer.Start()
+	Logger.Warn("Mirrors HTTP Server Start!")
 	c.Start()
+	Logger.Warn("Cron Task Start!")
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt)
 	<-sig
 	for _, stor := range stors {
 		stor.Close()
 	}
+	Logger.Warn("Stors  Close!")
+	for _, file := range logFiles {
+		file.Close()
+	}
+	Logger.Warn("Shutdown.")
 }
 
 func rel(srcRoot string, src string) (string, error) {
@@ -157,4 +221,10 @@ func rel(srcRoot string, src string) (string, error) {
 		return "", errors.New("wrong src root")
 	}
 	return strings.TrimPrefix(src, srcRoot), nil
+}
+
+func createLogDir(path string) error {
+	mask := syscall.Umask(0)
+	defer syscall.Umask(mask)
+	return os.MkdirAll(path, 0755)
 }

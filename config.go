@@ -35,6 +35,7 @@ func createSampleConfig() {
 
 [global]
   server = "127.0.0.1:52111"
+  logdir = "./log"
 
 [archlinux]
   name = "archlinux"
