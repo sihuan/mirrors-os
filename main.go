@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) {
+func initTask(task *taskConf,logger *logrus.Logger) (*MirrorItem, *storage.Teambition, func(), error) {
 	addr, module, path, err := rsync.SplitURI(task.Src)
 	if err != nil {
 		return nil, nil, nil, err
@@ -53,11 +53,6 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 	}
 
 	sync := func() {
-		rsync.Logger.WithFields(logrus.Fields{
-			"module": module,
-			"path":   ppath,
-		}).Warn("SRC")
-
 		mi.StatusChan <- UPDATING
 
 		Logger.WithFields(logrus.Fields{
@@ -71,7 +66,7 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 		)
 
 		for retry == 0 || (err != nil && retry < 5) {
-			client, err = rsync.SocketClient(stor, addr, module, ppath, nil)
+			client, err = rsync.SocketClient(stor, addr, module, ppath, nil,logger)
 			if err != nil {
 				Logger.WithFields(logrus.Fields{
 					"task": task.Name,
@@ -176,8 +171,9 @@ func main() {
 			panic(err)
 		}
 		logFiles = append(logFiles, logFile)
-		rsync.Logger.SetOutput(logFile)
-		mi, stor, sync, err := initTask(task)
+		logger := logrus.New()
+		logger.SetOutput(logFile)
+		mi, stor, sync, err := initTask(task,logger)
 		if err != nil {
 			panic(arg + " init err: " + err.Error())
 		}
