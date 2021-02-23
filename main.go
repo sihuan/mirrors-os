@@ -57,27 +57,36 @@ func initTask(task *taskConf) (*MirrorItem, *storage.Teambition, func(), error) 
 
 	sync := func() {
 		mi.StatusChan <- UPDATING
-		client, err := rsync.SocketClient(stor, addr, module, ppath, nil)
+
+		var (
+			retry        = 0
+			err    error = nil
+			client rsync.SendReceiver
+		)
+
+		for retry == 0 || (err != nil && retry < 5) {
+			client, err = rsync.SocketClient(stor, addr, module, ppath, nil)
+			if err != nil {
+				fmt.Println(task.Name, "Sync Socket Connect Err: ", err, "Retry:", retry)
+				retry++
+				continue
+			}
+			err = client.Sync()
+			if err != nil {
+				if err := stor.FinishSync(); err != nil {
+					fmt.Println(task.Name, "Sync Err FinishSync Err: ", err)
+				}
+				fmt.Println(task.Name, "Sync Err: ", err, "Retry:", retry)
+			}
+			retry++
+		}
+
 		if err != nil {
+			fmt.Println(task.Name, "Sync F,ERR: ", err)
 			mi.StatusChan <- FAILD
 			return
 		}
-		retry := 0
-		if err := client.Sync(); err != nil {
-			for err != nil && retry < 5 {
-				if err := stor.FinishSync(); err != nil {
-					fmt.Println("Sync Err FinishSync Err: ", err)
-				}
-				fmt.Println(task.Name, "Sync Err: ", err, "Retry:", retry)
-				err = client.Sync()
-				retry++
-			}
-			if err != nil {
-				fmt.Println(task.Name, "Sync F,ERR: ", err)
-				mi.StatusChan <- FAILD
-				return
-			}
-		}
+
 		err = stor.FinishSync()
 		if err != nil {
 			fmt.Println("Sync Success FinishSync Err: ", err)
