@@ -20,11 +20,14 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/spf13/viper"
 )
 
 func initTask(task *taskConf,logger *logrus.Logger) (*MirrorItem, *storage.Teambition, func(), error) {
+	options := make(map[string][]string)
+	options["--exclude"] = task.Exclusion
 	addr, module, path, err := rsync.SplitURI(task.Src)
 	if err != nil {
 		return nil, nil, nil, err
@@ -66,7 +69,7 @@ func initTask(task *taskConf,logger *logrus.Logger) (*MirrorItem, *storage.Teamb
 		)
 
 		for retry == 0 || (err != nil && retry < 5) {
-			client, err = rsync.SocketClient(stor, addr, module, ppath, nil,logger)
+			client, err = rsync.SocketClient(stor, addr, module, ppath, options,logger)
 			if err != nil {
 				Logger.WithFields(logrus.Fields{
 					"task": task.Name,
@@ -131,6 +134,7 @@ type taskConf struct {
 	Base    string
 	DBPath  string
 	Cron    string
+	Exclusion []string
 }
 
 var Logger = logrus.New()
@@ -199,6 +203,7 @@ func main() {
 		stor.Close()
 	}
 	Logger.Warn("Stors  Close!")
+	time.Sleep(521 * time.Millisecond)
 	for _, file := range logFiles {
 		file.Close()
 	}

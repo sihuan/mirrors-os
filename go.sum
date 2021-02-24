@@ -15,8 +15,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210223132523-da4f40b1950c h1:fKt1e5fEbabNiD+nG3F3PrJ3bBvPpW+nsAfz/u/Y59Y=
-github.com/Si-Huan/rsync-os v0.2.1-0.20210223132523-da4f40b1950c/go.mod h1:Y905zqPK9vSM9p9f3rbW21glcVSGaZkEKaBVuyBfqyY=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210224124844-60f54dfb5112 h1:yCnWiz+2l0+CS14W+YUMv7UWPBJuZq3QaqjXqcNKWCw=
+github.com/Si-Huan/rsync-os v0.2.1-0.20210224124844-60f54dfb5112/go.mod h1:Y905zqPK9vSM9p9f3rbW21glcVSGaZkEKaBVuyBfqyY=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5 h1:BYyFwJhB6nStx0HejO5AG6VKvoSvGTvv0CDu/3WEIFk=
 github.com/Si-Huan/teambition-pan-api v0.0.0-20210222130027-abd7d4d937b5/go.mod h1:djl/OL5Fu3X+pC+uuyrzP8tSrHe8Lhp3+47RlfoQ28c=
 github.com/Si-Huan/ubuffer v0.0.0-20210221075203-c73a1bf8bf75 h1:6m4w2YKdnlzYNhtz7785WurOFDp/qM7NpQCZeLc3iTo=
