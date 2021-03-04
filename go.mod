@@ -1,10 +1,10 @@
-module github.com/Si-Huan/mirrors-os
+module github.com/sihuan/mirrors-os
 
-go 1.15
+go 1.16
 
 require (
-	github.com/Si-Huan/rsync-os v0.2.1-0.20210302045200-8f33b4866a5c
 	github.com/robfig/cron v1.2.0
-	github.com/sirupsen/logrus v1.5.0
+	github.com/sihuan/rsync-os v0.2.1-0.20210304040910-f046be37d5a1
+	github.com/sirupsen/logrus v1.8.0
 	github.com/spf13/viper v1.7.1
 )

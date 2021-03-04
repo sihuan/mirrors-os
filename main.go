@@ -11,8 +11,8 @@ package main
 import (
 	"errors"
 	"flag"
-	"github.com/Si-Huan/rsync-os/rsync"
-	"github.com/Si-Huan/rsync-os/storage"
+	"github.com/sihuan/rsync-os/rsync"
+	"github.com/sihuan/rsync-os/storage"
 	"github.com/robfig/cron"
 	"github.com/sirupsen/logrus"
 	"os"
