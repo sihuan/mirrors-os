@@ -19,6 +19,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -55,7 +56,10 @@ func initTask(task *taskConf,logger *logrus.Logger) (*MirrorItem, *storage.Teamb
 		Status:     0,
 	}
 
+	mutex := new(sync.Mutex)
 	sync := func() {
+		mutex.Lock()
+		defer mutex.Unlock()
 		mi.StatusChan <- UPDATING
 
 		Logger.WithFields(logrus.Fields{
